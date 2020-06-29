@@ -19,6 +19,7 @@
 # Paul Ross: apaulross@gmail.com
 """Tests ...
 """
+from tests.unit.test_util.test_plot import TestPlotAREA
 
 __author__  = 'Paul Ross'
 __date__    = '2010-08-02'
@@ -64,13 +65,13 @@ from TotalDepth.util import ExecTimer
 ######################
 import unittest
 
-sys.path.append(os.path.join(os.path.dirname(__file__)))
-import TestPlotShared
-import TestLogHeader
-import TestPlotLASData
-import TestLgFormatXMLData
-sys.path.append(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
-import BaseTestClasses
+# sys.path.append(os.path.join(os.path.dirname(__file__)))
+from . import TestPlotShared
+from . import TestLogHeader
+from . import TestPlotLASData
+from . import TestLgFormatXMLData
+# sys.path.append(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
+from tests.unit import BaseTestClasses
 
 #=================================================
 # Section: Managing where our test SVG is written.
@@ -247,6 +248,15 @@ def writeTestSVGIndex():
                         xS.characters('link')
                     xS.characters(' ')
                     xS.characters(TEST_SVG_FILE_MAP_LAS[k].description)
+        with XmlWrite.Element(xS, 'h1', {}):
+            xS.characters('Lithology Patterns from LgFormat XML')
+        with XmlWrite.Element(xS, 'ol'):
+            for k in sorted(TestPlotAREA.TEST_SVG_AREAS.keys()):
+                with XmlWrite.Element(xS, 'li'):
+                    with XmlWrite.Element(xS, 'a', {'href' : TestPlotAREA.TEST_SVG_AREAS[k].fileName}):
+                        xS.characters('link')
+                    xS.characters(' ')
+                    xS.characters(TestPlotAREA.TEST_SVG_AREAS[k].description)
 #=================================================
 # End: Managing where our test SVG is written.
 #=================================================
